@@ -1,0 +1,25 @@
+#include <stdio.h>
+
+struct emp {
+    int id;
+    char name[20];
+    float salary;
+};
+
+int main() {
+    FILE *fp=fopen("emp.dat","wb+");
+
+    struct emp e={101,"John",50000};
+
+    fwrite(&e,sizeof(e),1,fp);
+
+    rewind(fp);
+
+    fread(&e,sizeof(e),1,fp);
+
+    printf("%d %s %.2f\n",e.id,e.name,e.salary);
+
+    fclose(fp);
+
+    return 0;
+}
