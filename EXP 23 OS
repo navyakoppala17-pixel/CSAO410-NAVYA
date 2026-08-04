@@ -1,0 +1,39 @@
+#include <stdio.h>
+
+int main()
+{
+    int nb,np;
+
+    scanf("%d",&nb);
+
+    int block[20];
+
+    for(int i=0;i<nb;i++)
+        scanf("%d",&block[i]);
+
+    scanf("%d",&np);
+
+    int process[20];
+
+    for(int i=0;i<np;i++)
+        scanf("%d",&process[i]);
+
+    for(int i=0;i<np;i++)
+    {
+        int allocated=0;
+
+        for(int j=0;j<nb;j++)
+        {
+            if(block[j]>=process[i])
+            {
+                printf("Process %d -> Block %d\n",i+1,j+1);
+                block[j]-=process[i];
+                allocated=1;
+                break;
+            }
+        }
+
+        if(!allocated)
+            printf("Process %d Not Allocated\n",i+1);
+    }
+}
