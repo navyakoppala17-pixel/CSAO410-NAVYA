@@ -1,0 +1,52 @@
+#include <stdio.h>
+
+struct Block
+{
+    int blockNumber;
+    int next;
+};
+
+int main()
+{
+    struct Block blocks[20];
+    int n, i;
+    int first, current;
+
+    printf("Enter number of blocks in file: ");
+    scanf("%d", &n);
+
+    printf("Enter block numbers:\n");
+
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d", &blocks[i].blockNumber);
+
+        if (i == 0)
+            first = blocks[i].blockNumber;
+    }
+
+    // Create links
+    for (i = 0; i < n - 1; i++)
+        blocks[i].next = blocks[i + 1].blockNumber;
+
+    blocks[n - 1].next = -1;
+
+    printf("\nLinked File Allocation:\n");
+
+    current = first;
+
+    for (i = 0; i < n; i++)
+    {
+        printf("Block %d -> ", blocks[i].blockNumber);
+
+        if (blocks[i].next == -1)
+            printf("NULL\n");
+        else
+            printf("%d\n", blocks[i].next);
+    }
+
+    printf("\nFirst Block = %d\n", first);
+    printf("Last Block = %d\n", blocks[n - 1].blockNumber);
+
+    return 0;
+}
