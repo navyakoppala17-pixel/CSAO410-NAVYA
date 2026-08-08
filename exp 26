@@ -1,0 +1,119 @@
+// Q26: File Management Operations
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+int main()
+{
+    int choice;
+    char filename[100];
+    char newname[100];
+    int fd;
+    char data[200];
+
+    while (1)
+    {
+        printf("\n--- File Management ---\n");
+        printf("1. Create File\n");
+        printf("2. Write File\n");
+        printf("3. Read File\n");
+        printf("4. Rename File\n");
+        printf("5. Delete File\n");
+        printf("6. Exit\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+            case 1:
+                printf("Enter filename: ");
+                scanf("%s", filename);
+
+                fd = open(filename, O_CREAT | O_WRONLY, 0644);
+
+                if (fd < 0)
+                    perror("File creation failed");
+                else
+                {
+                    printf("File created successfully.\n");
+                    close(fd);
+                }
+                break;
+
+            case 2:
+                printf("Enter filename: ");
+                scanf("%s", filename);
+
+                fd = open(filename, O_WRONLY | O_APPEND);
+
+                if (fd < 0)
+                {
+                    perror("File opening failed");
+                    break;
+                }
+
+                printf("Enter data: ");
+                scanf(" %[^\n]", data);
+
+                write(fd, data, sizeof(data));
+                close(fd);
+
+                printf("Data written successfully.\n");
+                break;
+
+            case 3:
+                printf("Enter filename: ");
+                scanf("%s", filename);
+
+                fd = open(filename, O_RDONLY);
+
+                if (fd < 0)
+                {
+                    perror("File opening failed");
+                    break;
+                }
+
+                int n = read(fd, data, sizeof(data) - 1);
+                data[n] = '\0';
+
+                printf("File contents:\n%s\n", data);
+
+                close(fd);
+                break;
+
+            case 4:
+                printf("Enter old filename: ");
+                scanf("%s", filename);
+
+                printf("Enter new filename: ");
+                scanf("%s", newname);
+
+                if (rename(filename, newname) == 0)
+                    printf("File renamed successfully.\n");
+                else
+                    perror("Rename failed");
+
+                break;
+
+            case 5:
+                printf("Enter filename: ");
+                scanf("%s", filename);
+
+                if (remove(filename) == 0)
+                    printf("File deleted successfully.\n");
+                else
+                    perror("Delete failed");
+
+                break;
+
+            case 6:
+                exit(0);
+
+            default:
+                printf("Invalid choice.\n");
+        }
+    }
+
+    return 0;
+}
